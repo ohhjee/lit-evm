@@ -1,0 +1,17 @@
+{
+  "name": "litvm-supply-bot",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "ts-node --compiler-options {\"module\":\"CommonJS\"} src/index.ts"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.0",
+    "ethers": "^6.10.0",
+    "puppeteer": "^24.42.0",
+    "puppeteer-real-browser": "^1.4.4"
+  },
+  "devDependencies": {
+    "ts-node": "^10.9.2",
+    "typescript": "^5.3.3"
+  }
+}
