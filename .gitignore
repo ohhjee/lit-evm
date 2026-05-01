@@ -1,2 +1,4 @@
+.env
+# multi-wallet.ts
+# worked.ts
 node_modules
-env
