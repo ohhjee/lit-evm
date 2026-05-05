@@ -18,9 +18,9 @@ async function scheduler() {
       // await runFaucet(wallet.address);
       // await wrapZkLTCAddax("0.01");
       // await unwrapZkLTCAddax("0.01");
-      await wrapZkLTCWolf("0.001");
+      await wrapZkLTCWolf("0.01");
       await sleep(5000);
-      await unwrapZkLTCWolf("0.001");
+      await unwrapZkLTCWolf("0.01");
       await sleep(5000);
       await wrapZkLTC("0.001");
       await sleep(5000);
