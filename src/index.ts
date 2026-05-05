@@ -10,42 +10,56 @@ import { randomAmount, randomDelay } from "./utils/random";
 
 const wallets = createWallets();
 
+function now() {
+  return new Date().toLocaleTimeString();
+}
+
 async function scheduler() {
   while (true) {
-    console.log("💧 Time to claim faucet");
+    console.log(`\n💧 [${now()}] New Cycle Started`);
 
     try {
-      // const success = await runFaucet(wallet.address);
-      // await runFaucet(wallet.address);
-      // await wrapZkLTCAddax("0.01");
-      // await unwrapZkLTCAddax("0.01");
       const amt1 = randomAmount(0.001, 0.01);
-      const amt2 = randomAmount(0.005, 0.02);
-      console.log(`🔁 Wrapping ${amt1} zkLTC on WolfDex...`);
-      console.log(`🔁 Wrapping ${amt2} zkLTC on WolfDex...`);
+      const amt2 = randomAmount(0.003, 0.03);
+      const amt3 = randomAmount(0.006, 0.05);
 
+      console.log(`\n🪙 [${now()}] WolfDex Amount: ${amt1}`);
+      console.log(`🪙 [${now()}] LTVM Amount: ${amt2}`);
+      console.log(`🪙 [${now()}] Addax Amount: ${amt3}`);
+
+      // WOLF WRAP
+      console.log(`🔁 [${now()}] Wrapping ${amt1} zkLTC on WolfDex...`);
       await wrapZkLTCWolf(amt1);
-      await sleep(randomDelay(3000, 9000));
-      await unwrapZkLTCWolf(amt1);
-      await sleep(randomDelay(3000, 9000));
 
+      let delay = randomDelay(3000, 9000);
+      console.log(`⏱ Waiting ${delay / 1000}s...\n`);
+      await sleep(delay);
+
+      // WOLF UNWRAP
+      console.log(`🔁 [${now()}] Unwrapping ${amt1} zkLTC on WolfDex...`);
+      await unwrapZkLTCWolf(amt1);
+
+      console.log(`⏱ Waiting ${delay / 1000}s...\n`);
+      await sleep(delay);
+
+      // LTVM WRAP
+      console.log(`🔁 [${now()}] Wrapping ${amt2} zkLTC on LTVM...`);
       await wrapZkLTC(amt2);
-      await sleep(randomDelay(3000, 9000));
+
+      console.log(`⏱ Waiting ${delay / 1000}s...\n`);
+      await sleep(delay);
+
+      // LTVM UNWRAP
+      console.log(`🔁 [${now()}] Unwrapping ${amt2} zkLTC on LTVM...`);
       await unwrapZkLTC(amt2);
-      // await autoFaucet(wallet.address);
-      // const success = await runFaucet();
-      // if (success) {
-      //   console.log("🌾 Starting farming...");
-      //   await farm(wallet);
-      // } else {
-      //   console.log("⚠️ Faucet failed, skipping farm...");
-      // }
     } catch (err) {
-      console.log("❌ Error:", err);
+      console.log(`❌ [${now()}] Error:`, err);
     }
 
-    console.log("⏳ Waiting 2 hours...");
-    // await sleep(2 * 60 * 60 * 1000);
+    const waitTime = 2 * 60 * 60 * 1000;
+    console.log(`⏳ [${now()}] Waiting ${waitTime / 1000 / 60} minutes...\n`);
+
+    // await sleep(waitTime);
   }
 }
 
