@@ -6,6 +6,7 @@ import { sleep } from "./utils/sleep";
 import { unwrapZkLTCWolf, wrapZkLTCWolf } from "./dex/wolfDex";
 import { unwrapZkLTCAddax, wrapZkLTCAddax } from "./dex/addax";
 import { runFaucet } from "./faucet";
+import { randomAmount, randomDelay } from "./utils/random";
 
 const wallets = createWallets();
 
@@ -18,13 +19,19 @@ async function scheduler() {
       // await runFaucet(wallet.address);
       // await wrapZkLTCAddax("0.01");
       // await unwrapZkLTCAddax("0.01");
-      await wrapZkLTCWolf("0.01");
-      await sleep(5000);
-      await unwrapZkLTCWolf("0.01");
-      await sleep(5000);
-      await wrapZkLTC("0.001");
-      await sleep(5000);
-      await unwrapZkLTC("0.001");
+      const amt1 = randomAmount(0.001, 0.01);
+      const amt2 = randomAmount(0.005, 0.02);
+      console.log(`🔁 Wrapping ${amt1} zkLTC on WolfDex...`);
+      console.log(`🔁 Wrapping ${amt2} zkLTC on WolfDex...`);
+
+      await wrapZkLTCWolf(amt1);
+      await sleep(randomDelay(3000, 9000));
+      await unwrapZkLTCWolf(amt1);
+      await sleep(randomDelay(3000, 9000));
+
+      await wrapZkLTC(amt2);
+      await sleep(randomDelay(3000, 9000));
+      await unwrapZkLTC(amt2);
       // await autoFaucet(wallet.address);
       // const success = await runFaucet();
       // if (success) {
