@@ -8,19 +8,28 @@ const WRAP_CONTRACT = "0x315374aa9b5536037cc1efeea2439ccc0913a77e";
 
 const ABI = ["function deposit() payable", "function withdraw(uint256 amount)"];
 
-console.log("RAW ENV:", process.env.PRIVATE_KEYS);
+const rawKeys = (process.env.PRIVATE_KEYS ?? "")
+  .split(",")
+  .map((k) => k.trim())
+  .filter(Boolean);
 
-const rawKeys = process.env.PRIVATE_KEYS || "";
+const privateKeys: string[] = [];
 
-console.log("Raw PRIVATE_KEYS:", JSON.stringify(rawKeys));
+for (let key of rawKeys) {
+  // remove anything not hex
+  key = key.replace(/[^0-9a-fA-F]/g, "");
 
-const privateKeys = rawKeys
-  .split(",") // split by comma
-  .map((k) => k.trim()) // remove spaces
-  .map((k) => k.replace(/["'\[\]]/g, "")) // remove quotes and brackets if any
-  .map((k) => (k.startsWith("0x") ? k : `0x${k}`)) // add 0x if missing
-  .filter((k) => /^[0-9a-fA-F]{66}$/.test(k));
-console.log("PARSED KEYS:", privateKeys);
+  // ensure 0x prefix
+  if (key.length === 64) key = "0x" + key;
+
+  const wallet = new ethers.Wallet(key);
+  try {
+    console.log("✅ VALID KEY:", wallet.address);
+    privateKeys.push(key);
+  } catch {
+    console.log("❌ INVALID KEY SKIPPED:", wallet.address);
+  }
+}
 
 if (privateKeys.length === 0) {
   throw new Error("❌ No valid private keys found");

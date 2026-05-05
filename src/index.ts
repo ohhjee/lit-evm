@@ -21,10 +21,10 @@ async function scheduler() {
       await wrapZkLTCWolf("0.001");
       await sleep(5000);
       await unwrapZkLTCWolf("0.001");
-      // await sleep(5000);
-      // await wrapZkLTC("0.001");
-      // await sleep(5000);
-      // await unwrapZkLTC("0.001");
+      await sleep(5000);
+      await wrapZkLTC("0.001");
+      await sleep(5000);
+      await unwrapZkLTC("0.001");
       // await autoFaucet(wallet.address);
       // const success = await runFaucet();
       // if (success) {

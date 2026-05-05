@@ -11,8 +11,6 @@ const ABI = ["function deposit() payable", "function withdraw(uint256 amount)"];
 
 const provider = new ethers.JsonRpcProvider(RPC);
 
-console.log("RAW ENV:", process.env.PRIVATE_KEYS);
-
 // 🔐 Parse + sanitize + validate keys safely
 const rawKeys = (process.env.PRIVATE_KEYS ?? "")
   .split(",")
@@ -28,12 +26,12 @@ for (let key of rawKeys) {
   // ensure 0x prefix
   if (key.length === 64) key = "0x" + key;
 
+  const wallet = new ethers.Wallet(key);
   try {
-    const wallet = new ethers.Wallet(key);
     console.log("✅ VALID KEY:", wallet.address);
     privateKeys.push(key);
   } catch {
-    console.log("❌ INVALID KEY SKIPPED:", key);
+    console.log("❌ INVALID KEY SKIPPED:", wallet.address);
   }
 }
 
