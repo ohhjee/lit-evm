@@ -1,9 +1,13 @@
 import "dotenv/config";
-import { createWallet, farm } from "./farmer";
-import { runFaucet } from "./faucet";
+import { createWallets } from "./defi/farmer";
+import { unwrapZkLTC, wrapZkLTC } from "./dex/ltvmswap";
+// import { wrapZkLTC } from "./wrap";
 import { sleep } from "./utils/sleep";
+import { unwrapZkLTCWolf, wrapZkLTCWolf } from "./dex/wolfDex";
+import { unwrapZkLTCAddax, wrapZkLTCAddax } from "./dex/addax";
+import { runFaucet } from "./faucet";
 
-const wallet = createWallet();
+const wallets = createWallets();
 
 async function scheduler() {
   while (true) {
@@ -11,11 +15,21 @@ async function scheduler() {
 
     try {
       // const success = await runFaucet(wallet.address);
+      // await runFaucet(wallet.address);
+      // await wrapZkLTCAddax("0.01");
+      // await unwrapZkLTCAddax("0.01");
+      await wrapZkLTCWolf("0.001");
+      await sleep(5000);
+      await unwrapZkLTCWolf("0.001");
+      // await sleep(5000);
+      // await wrapZkLTC("0.001");
+      // await sleep(5000);
+      // await unwrapZkLTC("0.001");
+      // await autoFaucet(wallet.address);
       // const success = await runFaucet();
-
       // if (success) {
-      // console.log("🌾 Starting farming...");
-      await farm(wallet);
+      //   console.log("🌾 Starting farming...");
+      //   await farm(wallet);
       // } else {
       //   console.log("⚠️ Faucet failed, skipping farm...");
       // }
@@ -30,7 +44,10 @@ async function scheduler() {
 
 async function main() {
   console.log("🚀 FULL BOT STARTED");
-  console.log("Wallet:", wallet.address);
+  console.log(
+    "Wallets:",
+    wallets.map((w) => w.address),
+  );
 
   scheduler();
 }

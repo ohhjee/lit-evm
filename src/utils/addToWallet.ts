@@ -1,31 +1,24 @@
-export async function clickAddToWallet(page: any): Promise<void> {
-  console.log("🔗 Clicking 'Add to Wallet'...");
-
-  await page.waitForFunction(
-    () => {
-      const buttons = Array.from(document.querySelectorAll("button"));
-
-      return buttons.some((btn) =>
-        btn.textContent?.toLowerCase().includes("add to wallet"),
-      );
-    },
-    { timeout: 20000 },
-  );
-
-  await page.evaluate(() => {
-    const buttons = Array.from(document.querySelectorAll("button"));
-
-    const addBtn = buttons.find((btn) =>
-      btn.textContent?.toLowerCase().includes("add to wallet"),
+export async function clickAddToWallet(page: any) {
+  try {
+    await page.waitForFunction(
+      () => {
+        return Array.from(document.querySelectorAll("button")).some((b) =>
+          b.textContent?.toLowerCase().includes("add to wallet"),
+        );
+      },
+      { timeout: 5000 }, // ⬅️ reduce timeout
     );
 
-    if (!addBtn) throw new Error("Add to Wallet button not found");
+    await page.evaluate(() => {
+      const btn = Array.from(document.querySelectorAll("button")).find((b) =>
+        b.textContent?.toLowerCase().includes("add to wallet"),
+      );
 
-    (addBtn as HTMLButtonElement).click();
-  });
+      if (btn) (btn as HTMLButtonElement).click();
+    });
 
-  console.log("✅ Clicked 'Add to Wallet'");
-
-  // ⏳ Wait a bit for wallet injection
-  await new Promise((res) => setTimeout(res, 5000));
+    console.log("✅ Clicked 'Add to Wallet'");
+  } catch {
+    console.log("⚠️ No 'Add to Wallet' button");
+  }
 }
