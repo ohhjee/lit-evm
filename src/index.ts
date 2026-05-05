@@ -14,9 +14,11 @@ function now() {
   return new Date().toLocaleTimeString();
 }
 
+let cycle = 0;
 async function scheduler() {
   while (true) {
-    console.log(`\n💧 [${now()}] New Cycle Started`);
+    cycle++;
+    console.log(`\n💧 [${now()}] New Cycle Started (Cycle #${cycle})`);
 
     try {
       const amt1 = randomAmount(0.001, 0.01);
